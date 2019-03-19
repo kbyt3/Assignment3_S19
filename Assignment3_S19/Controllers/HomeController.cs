@@ -1,29 +1,46 @@
-﻿using System;
+﻿using Assignment3_S19.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Assignment3_S19.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Assignment3_S19.Controllers
 {
-  public class HomeController : Controller
-  {
-    public IActionResult Index()
+    public class HomeController : Controller
     {
-      return View();
-    }
+        private SignInManager<IdentityUser> _signInManager;
 
-    public IActionResult Privacy()
-    {
-      return View();
-    }
+        public HomeController(SignInManager<IdentityUser> signInManager)
+        {
+            _signInManager = signInManager;
+        }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-      return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public ActionResult Index()
+        {
+            if (_signInManager.IsSignedIn(HttpContext.User))
+            {
+                HttpContext.Response.Redirect("/Dashboard");
+            }
+            return View();
+        }
+
+        public ActionResult Privacy()
+        {
+            return View();
+        }
+
+        public ActionResult AboutUs()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
-  }
 }

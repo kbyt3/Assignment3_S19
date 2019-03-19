@@ -3,19 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+
   <partial name="_StyleSheets" />
 
   <title>@ViewData["Title"] - My Stock Portfolio</title>
 </head>
 <body>
   <partial name="_NavBar" />
-
-  <section class="clean-block">
-    <div class="container page">
-      @RenderBody()
-    </div>
-  </section>
+  
+  @RenderBody()
 
   <partial name="_Scripts" />
 
