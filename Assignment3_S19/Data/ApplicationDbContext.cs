@@ -16,5 +16,21 @@ namespace Assignment3_S19.Data
         }
 
         public DbSet<Company> Companies { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Company>()
+                .HasIndex(b => b.Symbol);
+
+            modelBuilder.Entity<Company>()
+                .HasIndex(b => b.Name);
+
+            modelBuilder.Entity<Company>()
+                .HasIndex(b => b.IexId)
+                .IsUnique();
+        }
+
     }
 }
