@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Assignment3_S19.Migrations
 {
-    public partial class CreateDB : Migration
+    public partial class Create_DB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,10 @@ namespace Assignment3_S19.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(maxLength: 50, nullable: true),
+                    LastName = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -171,6 +174,27 @@ namespace Assignment3_S19.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserStocks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true),
+                    Symbol = table.Column<string>(nullable: true),
+                    DateAdded = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserStocks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserStocks_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -209,6 +233,29 @@ namespace Assignment3_S19.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Companies_IexId",
+                table: "Companies",
+                column: "IexId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Companies_Name",
+                table: "Companies",
+                column: "Name");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Companies_Symbol",
+                table: "Companies",
+                column: "Symbol",
+                unique: true,
+                filter: "[Symbol] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserStocks_UserId",
+                table: "UserStocks",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -230,6 +277,9 @@ namespace Assignment3_S19.Migrations
 
             migrationBuilder.DropTable(
                 name: "Companies");
+
+            migrationBuilder.DropTable(
+                name: "UserStocks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

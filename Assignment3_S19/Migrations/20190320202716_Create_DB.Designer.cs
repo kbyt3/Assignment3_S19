@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assignment3_S19.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190320143418_Create DB")]
-    partial class CreateDB
+    [Migration("20190320202716_Create_DB")]
+    partial class Create_DB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,7 +44,35 @@ namespace Assignment3_S19.Migrations
 
                     b.HasKey("CompanyId");
 
+                    b.HasIndex("IexId")
+                        .IsUnique();
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("Symbol")
+                        .IsUnique()
+                        .HasFilter("[Symbol] IS NOT NULL");
+
                     b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("Assignment3_S19.Models.UserStock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateAdded");
+
+                    b.Property<string>("Symbol");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserStocks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -101,6 +129,9 @@ namespace Assignment3_S19.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
@@ -140,6 +171,8 @@ namespace Assignment3_S19.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -210,6 +243,26 @@ namespace Assignment3_S19.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Assignment3_S19.Models.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50);
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Assignment3_S19.Models.UserStock", b =>
+                {
+                    b.HasOne("Assignment3_S19.Models.ApplicationUser", "User")
+                        .WithMany("UserStocks")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
