@@ -4,16 +4,14 @@ using Assignment3_S19.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Assignment3_S19.Data.Migrations
+namespace Assignment3_S19.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190320000418_UpatedCompaniesTable")]
-    partial class UpatedCompaniesTable
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,12 +21,13 @@ namespace Assignment3_S19.Data.Migrations
 
             modelBuilder.Entity("Assignment3_S19.Models.Company", b =>
                 {
-                    b.Property<string>("CompanyId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("CompanyId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("IexId");
+                    b.Property<int>("IexId");
 
                     b.Property<bool>("IsEnabled");
 

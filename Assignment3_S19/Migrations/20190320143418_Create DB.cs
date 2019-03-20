@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using System;
 
-namespace Assignment3_S19.Data.Migrations
+namespace Assignment3_S19.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class CreateDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,6 +45,24 @@ namespace Assignment3_S19.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Companies",
+                columns: table => new
+                {
+                    CompanyId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Symbol = table.Column<string>(maxLength: 50, nullable: true),
+                    Name = table.Column<string>(maxLength: 255, nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Type = table.Column<string>(maxLength: 10, nullable: true),
+                    IsEnabled = table.Column<bool>(nullable: false),
+                    IexId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Companies", x => x.CompanyId);
                 });
 
             migrationBuilder.CreateTable(
@@ -209,6 +227,9 @@ namespace Assignment3_S19.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Companies");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

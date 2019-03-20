@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Assignment3_S19.Data.Migrations
+namespace Assignment3_S19.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190319235813_Added Companies Table")]
-    partial class AddedCompaniesTable
+    [Migration("20190320143418_Create DB")]
+    partial class CreateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,8 @@ namespace Assignment3_S19.Data.Migrations
             modelBuilder.Entity("Assignment3_S19.Models.Company", b =>
                 {
                     b.Property<int>("CompanyId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Date");
 
@@ -33,7 +34,7 @@ namespace Assignment3_S19.Data.Migrations
                     b.Property<bool>("IsEnabled");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(100);
+                        .HasMaxLength(255);
 
                     b.Property<string>("Symbol")
                         .HasMaxLength(50);
