@@ -1,0 +1,22 @@
+﻿@model Assignment3_S19.Models.AdminForm
+
+@{
+    ViewData["Title"] = "Site Administration";
+}
+
+<section class="admin-page">
+  <div class="block-heading">
+    <h2 class="text-info">Site Administration</h2>
+  </div>
+
+  <form method="post" asp-controller="Admin" asp-action="LoadCompanies">
+    <div class="form-group">
+      <label>Symbols In Database:</label>
+      <input class="form-control" type="text" readonly value="@Model.CompanyCount" />
+
+    </div>
+    <button type="submit" class="btn btn-primary">Reload</button>
+  </form>
+</section>
+
+

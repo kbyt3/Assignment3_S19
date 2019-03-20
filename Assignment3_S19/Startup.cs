@@ -1,4 +1,5 @@
 ﻿using Assignment3_S19.Data;
+using Assignment3_S19.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Assignment3_S19
@@ -33,6 +35,17 @@ namespace Assignment3_S19
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Configured named HttpClient instance
+            services.AddHttpClient("IEXTrading", options =>
+            {
+                options.BaseAddress = new Uri("https://api.iextrading.com/1.0/");
+                options.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json")
+                );
+            });
+
+            services.AddScoped<IEXTradingService>();
 
             services.AddMvc();
         }
@@ -60,8 +73,6 @@ namespace Assignment3_S19
 
             app.UseMvc(routes =>
             {
-                
-
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
