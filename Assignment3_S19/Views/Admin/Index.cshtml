@@ -20,9 +20,10 @@
 
 @section Scripts {
   <script>
+    const form = document.getElementById("reload-companies-form");
     const submitButton = document.getElementById("submit-button");
 
-    submitButton.addEventListener("click", () => {
+    form.addEventListener("submit", () => {
       submitButton.setAttribute("disabled", "disabled");
     });
   </script>

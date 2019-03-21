@@ -3,8 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+
   <partial name="_StyleSheets" />
+  @RenderSection("Head", required: false)
+
 
   <title>@ViewData["Title"] - My Stock Portfolio</title>
 </head>

@@ -1,0 +1,78 @@
+﻿@model Assignment3_S19.Models.ApplicationUser
+
+@{
+  ViewData["Title"] = "My Portfolio";
+}
+
+<div class="block-heading">
+  <h2 class="text-info">Your Portfolio</h2>
+</div>
+
+<div class="block-content">
+  <form method="post" asp-controller="Portfolio" asp-action="AddStock">
+    <input type="hidden" name="symbol" id="symbol-hidden" />
+
+    <div class="form-group text-center">
+      <label class="col-form-label-lg mr-3" for="search-text">Search for companies:</label>
+
+      <input type="text" id="search-text" placeholder="Company Name..." />
+
+      <button type="submit" id="add-company-button" disabled class="btn btn-primary btn-lg ml-1">Add</button>
+    </div>
+  </form>
+</div>
+
+<div class="block-content">
+  <ul class="list-group">
+    @foreach (var stock in Model.UserStocks)
+    {
+      <li class="list-group-item">
+        @stock.Symbol
+      </li>
+    }
+  </ul>
+</div>
+
+
+@section Head {
+  <link href="~/css/typeahead.css" rel="stylesheet" />
+}
+
+@section Scripts {
+  <script src="~/lib/typeahead.js/typeahead.bundle.js"></script>
+
+  <script>
+    const companies = new Bloodhound({
+      datumTokenizer: Bloodhound.tokenizers.obj.whitespace("value"),
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      remote: {
+        url: "/Portfolio/SearchCompany?searchText=%QUERY",
+        wildcard: "%QUERY"
+      }
+    });
+
+    const searchTextBox = $("#search-text");
+    const submitButton = $("#add-company-button");
+    const symbolToBeAdded = $("#symbol-hidden");
+
+    searchTextBox.typeahead({
+      classNames: {
+        input: "tt-query"
+      }
+    }, {
+      display: "label",
+      source: companies
+      });
+
+    searchTextBox.bind("typeahead:select", (ev, suggestion) => {
+      if (typeof suggestion === "object") {
+        submitButton.prop("disabled", false);
+        symbolToBeAdded.val(suggestion.value);
+      }
+    });
+
+    
+
+
+  </script>
+}

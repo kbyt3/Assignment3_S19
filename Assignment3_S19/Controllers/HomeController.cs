@@ -11,9 +11,9 @@ namespace Assignment3_S19.Controllers
 {
     public class HomeController : Controller
     {
-        private SignInManager<IdentityUser> _signInManager;
+        private SignInManager<ApplicationUser> _signInManager;
 
-        public HomeController(SignInManager<IdentityUser> signInManager)
+        public HomeController(SignInManager<ApplicationUser> signInManager)
         {
             _signInManager = signInManager;
         }
