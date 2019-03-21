@@ -9,14 +9,23 @@
     <h2 class="text-info">Site Administration</h2>
   </div>
 
-  <form method="post" asp-controller="Admin" asp-action="LoadCompanies">
+  <form id="reload-companies-form" method="post" asp-controller="Admin" asp-action="LoadCompanies">
     <div class="form-group">
       <label>Symbols In Database:</label>
       <input class="form-control" type="text" readonly value="@Model.CompanyCount" />
-
     </div>
-    <button type="submit" class="btn btn-primary">Reload</button>
+    <button type="submit" id="submit-button" class="btn btn-primary">Reload</button>
   </form>
 </section>
+
+@section Scripts {
+  <script>
+    const submitButton = document.getElementById("submit-button");
+
+    submitButton.addEventListener("click", () => {
+      submitButton.setAttribute("disabled", "disabled");
+    });
+  </script>
+}
 
 

@@ -34,9 +34,11 @@ namespace Assignment3_S19.Controllers
         {
             var companies = await _iexService.GetCompanies();
 
+            // Delete all company rows
             var itemsToDelete = _dbContext.Set<Company>();
             _dbContext.Companies.RemoveRange(itemsToDelete);
             
+            // Insert and save changes
             await _dbContext.Companies.AddRangeAsync(companies);
             await _dbContext.SaveChangesAsync();
 

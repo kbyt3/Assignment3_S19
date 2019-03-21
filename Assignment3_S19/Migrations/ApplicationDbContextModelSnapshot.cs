@@ -4,16 +4,14 @@ using Assignment3_S19.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Assignment3_S19.Data.Migrations
+namespace Assignment3_S19.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190319235813_Added Companies Table")]
-    partial class AddedCompaniesTable
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,7 +22,8 @@ namespace Assignment3_S19.Data.Migrations
             modelBuilder.Entity("Assignment3_S19.Models.Company", b =>
                 {
                     b.Property<int>("CompanyId")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Date");
 
@@ -33,7 +32,7 @@ namespace Assignment3_S19.Data.Migrations
                     b.Property<bool>("IsEnabled");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(100);
+                        .HasMaxLength(255);
 
                     b.Property<string>("Symbol")
                         .HasMaxLength(50);
@@ -43,7 +42,35 @@ namespace Assignment3_S19.Data.Migrations
 
                     b.HasKey("CompanyId");
 
+                    b.HasIndex("IexId")
+                        .IsUnique();
+
+                    b.HasIndex("Name");
+
+                    b.HasIndex("Symbol")
+                        .IsUnique()
+                        .HasFilter("[Symbol] IS NOT NULL");
+
                     b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("Assignment3_S19.Models.UserStock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateAdded");
+
+                    b.Property<string>("Symbol");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserStocks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -100,6 +127,9 @@ namespace Assignment3_S19.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
@@ -139,6 +169,8 @@ namespace Assignment3_S19.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -209,6 +241,26 @@ namespace Assignment3_S19.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Assignment3_S19.Models.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50);
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Assignment3_S19.Models.UserStock", b =>
+                {
+                    b.HasOne("Assignment3_S19.Models.ApplicationUser", "User")
+                        .WithMany("UserStocks")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
