@@ -1,0 +1,27 @@
+﻿
+@{
+  ViewData["Title"] = "Index";
+}
+
+<div class="block-heading">
+  <h2 class="text-info">Investment Guides</h2>
+</div>
+
+<div class="block-content">
+
+  <ul>
+    <li>
+      <a asp-controller="Guides" asp-action="Equity">Equity</a>
+    </li>
+    <li>
+      <a asp-controller="Guides" asp-action="FixedIncome">Fixed Icome</a>
+    </li>
+    <li>
+      <a asp-controller="Guides" asp-action="MutualFunds">Mutual Funds</a>
+    </li>
+    <li>
+      <a asp-controller="Guides" asp-action="OtherServices">Other Services</a>
+    </li>
+  </ul>
+
+</div>
