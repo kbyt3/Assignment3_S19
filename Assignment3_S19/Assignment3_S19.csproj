@@ -19,6 +19,11 @@
     <Compile Remove="Migrations\20190320194612_Create_DB.Designer.cs" />
     <Compile Remove="Migrations\20190320202422_Create_DB.cs" />
     <Compile Remove="Migrations\20190320202422_Create_DB.Designer.cs" />
+    <Compile Remove="Views\Guides\SandPIndex.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Guides\SandPIndex.cshtml" />
   </ItemGroup>
 
 

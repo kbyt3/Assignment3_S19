@@ -18,6 +18,11 @@ namespace Assignment3_S19.Controllers
             return View();
         }
 
+        public ActionResult SPIndex()
+        {
+            return View();
+        }
+
         public ActionResult FixedIncome()
         {
             return View();
