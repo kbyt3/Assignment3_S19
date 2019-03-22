@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ApiResponse = System.Collections.Generic.Dictionary<string, Assignment3_S19.Models.IEXApiResponse>;
 
 namespace Assignment3_S19.Services
 {
@@ -18,8 +19,7 @@ namespace Assignment3_S19.Services
 
         public async Task<IEnumerable<Company>> GetCompanies()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get,
-                "ref-data/symbols");
+            var request = new HttpRequestMessage(HttpMethod.Get, "ref-data/symbols");
 
             var client = _clientFactory.CreateClient("IEXTrading");
 
@@ -31,9 +31,33 @@ namespace Assignment3_S19.Services
                     .ReadAsAsync<IEnumerable<Company>>();
             }
             else
-            {   
+            {
                 return Array.Empty<Company>();
             }
+        }
+
+        public async Task<ApiResponse> GetStockData(string[] symbols, string[] requested, string range = "1m", int last = 5)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, MakeRequestUrl(symbols, requested, range, last));
+
+            var client = _clientFactory.CreateClient("IEXTrading");
+
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content
+                    .ReadAsAsync<ApiResponse>();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private string MakeRequestUrl(string[] symbols, string[] requested, string range, int last)
+        {
+            return String.Format(@"stock/market/batch?symbols={0}&types={1}&range={2}&last={3}", String.Join(',', symbols), String.Join(',', requested), range, last);
         }
     }
 }
