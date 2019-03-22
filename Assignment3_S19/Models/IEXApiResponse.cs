@@ -10,9 +10,14 @@ namespace Assignment3_S19.Models
     {
         public IEXCompany Company { get; set; }
         public IEXQuote Quote { get; set; }
-        public string Logo { get; set; }
+        public IEXLogo Logo { get; set; }
         public IEnumerable<IEXChartData> Chart { get; set; }
         public IEnumerable<IEXNews> News { get; set; }
+    }
+
+    public class IEXLogo
+    {
+        public string Url { get; set; }
     }
 
     public class IEXCompany

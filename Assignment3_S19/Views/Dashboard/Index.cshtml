@@ -1,9 +1,145 @@
-﻿@{ 
-    ViewData["Title"] = "My Dashboard";
+﻿@model DashboardViewModel
+@using Newtonsoft.Json
+
+@{
+  ViewData["Title"] = "My Dashboard";
 }
+
+
 
 <section class="dashboard">
   <div class="block-heading">
     <h2 class="text-info">Dashboard</h2>
   </div>
+
+  <div class="block-content">
+    <div class="container">
+      <div class="row">
+        @foreach (var stock in Model.StockData)
+        {
+          <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 d-flex mb-4">
+            <div class="card">
+              <div class="chart card-img-top"></div>
+              <div class="card-body flex-fill">
+                <h5 class="card-title">
+                  @stock.Value.Company.CompanyName (@stock.Key)
+                </h5>
+                <p class="card-text">
+                  Latest Price:
+
+                  @stock.Value.Quote.LatestPrice.ToString("C2")
+
+                  @if (stock.Value.Quote.Change > 0)
+                  {
+                    <span class="text-success">
+                      +@stock.Value.Quote.Change.ToString("C2")
+                      <i class="fas fa-arrow-up"></i>
+                      (@stock.Value.Quote.ChangePercent.ToString("P1"))
+                    </span>
+                  }
+                  else
+                  {
+                    <span class="text-danger">
+                      @stock.Value.Quote.Change.ToString("C2")
+                      <i class="fas fa-arrow-down"></i>
+                      (@stock.Value.Quote.ChangePercent.ToString("P1"))
+                    </span>
+                  }
+                </p>
+              </div>
+              <div class="card-footer text-right pb-1 pt-1">
+                <a href="#" class="more-details btn btn-link">More Details</a>
+              </div>
+            </div>
+          </div>
+
+        }
+      </div>
+    </div>
+  </div>
 </section>
+
+@section Head {
+  <style>
+    /*.more-details {
+      position: absolute;
+      right: 1rem;
+      bottom: 1rem;
+    }*/
+  </style>
+}
+
+@section Scripts {
+  <script src="~/lib/apexcharts/apexcharts.js"></script>
+  <script>
+    const chartData = @Html.Raw(JsonConvert.SerializeObject(Model.StockData));
+    const options = {
+      chart: {
+        type: "area",
+        stacked: false,
+        height: 150,
+        zoom: {
+          type: "x",
+          enabled: true
+        },
+        toolbar: {
+          autoSelected: "zoom"
+        }
+      },
+      dataLabels: {
+        enabled: false
+      }
+    };
+
+    /*
+      series: [{
+        name: "XYZ MOTORS",
+        data: dates
+      }],
+      markers: {
+        size: 0,
+      },
+      title: {
+        text: "Stock Price Movement",
+        align: "left"
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 1,
+          inverseColors: false,
+          opacityFrom: 0.5,
+          opacityTo: 0,
+          stops: [0, 90, 100]
+        },
+      },
+      yaxis: {
+        min: 20000000,
+        max: 250000000,
+        labels: {
+          formatter: function (val) {
+            return (val / 1000000).toFixed(0);
+          },
+        },
+        title: {
+          text: "Price"
+        },
+      },
+      xaxis: {
+        type: "datetime",
+      },
+
+      tooltip: {
+        shared: false,
+        y: {
+          formatter: function (val) {
+            return (val / 1000000).toFixed(0)
+          }
+        }
+      }
+    }*/
+
+
+
+  </script>
+}

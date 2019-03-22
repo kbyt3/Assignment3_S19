@@ -42,7 +42,7 @@
   <script src="~/lib/typeahead.js/typeahead.bundle.js"></script>
 
   <script>
-    const companies = new Bloodhound({
+    var companies = new Bloodhound({
       datumTokenizer: Bloodhound.tokenizers.obj.whitespace("value"),
       queryTokenizer: Bloodhound.tokenizers.whitespace,
       remote: {
@@ -51,9 +51,9 @@
       }
     });
 
-    const searchTextBox = $("#search-text");
-    const submitButton = $("#add-company-button");
-    const symbolToBeAdded = $("#symbol-hidden");
+    var searchTextBox = $("#search-text");
+    var submitButton = $("#add-company-button");
+    var symbolToBeAdded = $("#symbol-hidden");
 
     searchTextBox.typeahead({
       classNames: {
@@ -64,15 +64,11 @@
       source: companies
       });
 
-    searchTextBox.bind("typeahead:select", (ev, suggestion) => {
+    searchTextBox.bind("typeahead:select", function(ev, suggestion) {
       if (typeof suggestion === "object") {
         submitButton.prop("disabled", false);
         symbolToBeAdded.val(suggestion.value);
       }
     });
-
-    
-
-
   </script>
 }
