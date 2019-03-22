@@ -10,58 +10,85 @@
   </div>
   <div class="row justify-content-center">
     <div class="col-sm-4 col-lg-3">
-        <div class="card clean-card text-center">
-            <img class="card-img-top w-100 d-block" src="~/img/Jim.jpg">
-            <div class="card-body info">
-                <h4 class="card-title">James Farley</h4>
-                <p class="card-text">Finance Manager</p>
-            </div>
-            <button onclick="myFunction()">Bio</button>
-            <script>
-                function myFunction() {
-                    alert("A finance and analytics professional with over twenty years of investment"+"\n"+
-                            "banking experience.Experience includes equities, fixed income, derivatives and"+"\n"+
-                              "commodities in trading, middle - office and back - office and operations roles.James"+"\n"+
-                              "has an MBA and B.S.in Finance from St.John’s University along with pursuing"+"\n"+
-                          "an MS Business Analytics / Information Systems at the University of South Florida"+"\n"+
-                    "and bachelors in Data Analytics from St.Petersburg College.");
-                }
-            </script>
+      <div class="card clean-card text-center">
+        <img class="card-img-top w-100 d-block" src="~/img/Jim.jpg">
+        <div class="card-body info">
+          <h4 class="card-title">James Farley</h4>
+          <p class="card-text">Finance Manager</p>
+          <button class="btn btn-outline-info" onclick="openBio('jim')">Bio</button>
         </div>
+      </div>
     </div>
     <div class="col-sm-4 col-lg-3">
-        <div class="card clean-card text-center">
-            <img class="card-img-top w-100 d-block" src="~/img/Venkat.jpg">
-            <div class="card-body info">
-                <h4 class="card-title">Venkatesh P. Murthy</h4>
-                <p class="card-text">Cloud Specialist</p>
-            </div>
-            <button onclick="myFunction()">Bio</button>
-            <script>
-                function myFunction() {
-                    alert("Cloud engineer and an IT professional for more than 15 years, Venkat is responsible for any technological duties associated with cloud computing, including design, planning, management, maintenance and support for the organization." + "\n" +
-                        "As a cloud computing specialist, he has good experience in system architecture, troubleshooting skills, Virtualization technology skills, systems architecture skills, excellent collaborative skills, and strong analytical reasoning." + "\n" +
-                        "As a cloud computing specialist, he is able to effectively weigh the potential risks of IT solutions against a company's IT needs.");
-                }
-            </script>
+      <div class="card clean-card text-center">
+        <img class="card-img-top w-100 d-block" src="~/img/Venkat.jpg">
+        <div class="card-body info">
+          <h4 class="card-title">Venkatesh P. Murthy</h4>
+          <p class="card-text">Cloud Specialist</p>
+          <button class="btn btn-outline-info" onclick="openBio('venkat')">Bio</button>
         </div>
+      </div>
     </div>
     <div class="col-sm-4 col-lg-3">
-        <div class="card clean-card text-center">
-            <img class="card-img-top w-100 d-block" src="~/img/Manny.jpg">
-            <div class="card-body info">
-                <h4 class="card-title">Manny Tirado</h4>
-                <p class="card-text">Software Developer</p>
-            </div>
-            <button onclick="myFunction()">Bio</button>
-            <script>
-                function myFunction() {
-                    alert("Emanuel is a Senior Business Intelligence Analyst and Software Developer, with nearly ten years of professional experience, Emanuel manages the data warehousing and reporting operations for multiple business segments across the country." + "\n" +
-                        "He also assists management with process automation solutions and creates tools to support the evolving needs of the business. His experience includes SQL Server, SQL Server Integration Services, SQL Server Reporting Services, C#, ASP.NET MVC, and JavaScript. " + "\n" +
-                        "Emanuel obtained a Bachelor’s Degree in Computer Science with a concentration in Cybersecurity and Information Assurance from Florida Polytechnic University. He was a member of the university's inaugural class and graduated Summa Cum Laude in 2017.");
-                }
-            </script>
+      <div class="card clean-card text-center">
+        <img class="card-img-top w-100 d-block" src="~/img/Manny.jpg">
+        <div class="card-body info">
+          <h4 class="card-title">Manny Tirado</h4>
+          <p class="card-text">Software Developer</p>
+          <button class="btn btn-outline-info" onclick="openBio('manny')">Bio</button>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="bio-modal-dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bio-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <span id="bio-text"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+@section Scripts {
+  <script>
+    var bios = {
+      jim: "A finance and analytics professional with over twenty years of investment" +
+        "banking experience.Experience includes equities, fixed income, derivatives and" +
+        "commodities in trading, middle - office and back - office and operations roles.James" +
+        "has an MBA and B.S.in Finance from St.John’s University along with pursuing" +
+        "an MS Business Analytics / Information Systems at the University of South Florida" +
+        "and bachelors in Data Analytics from St.Petersburg College.",
+      venkat: "Cloud engineer and an IT professional for more than 15 years, Venkat is responsible for any technological duties associated with cloud computing, including design, planning, management, maintenance and support for the organization." +
+        "As a cloud computing specialist, he has good experience in system architecture, troubleshooting skills, Virtualization technology skills, systems architecture skills, excellent collaborative skills, and strong analytical reasoning." +
+        "As a cloud computing specialist, he is able to effectively weigh the potential risks of IT solutions against a company's IT needs.",
+      manny: "Emanuel is a Senior Business Intelligence Analyst and Software Developer, with nearly ten years of professional experience, Emanuel manages the data warehousing and reporting operations for multiple business segments across the country." +
+        "He also assists management with process automation solutions and creates tools to support the evolving needs of the business. His experience includes SQL Server, SQL Server Integration Services, SQL Server Reporting Services, C#, ASP.NET MVC, and JavaScript. " +
+        "Emanuel obtained a Bachelor’s Degree in Computer Science with a concentration in Cybersecurity and Information Assurance from Florida Polytechnic University. He was a member of the university's inaugural class and graduated Summa Cum Laude in 2017."
+    };
+
+    function openBio(person) {
+      if (person === "jim") {
+        $("#bio-title").text("James Farley");
+      }
+      else if (person === "venkat") {
+        $("#bio-title").text("Venkatesh P. Murthy");
+      }
+      else {
+        $("#bio-title").text("Emanuel Tirado");
+      }
+      $("#bio-text").text(bios[person]);
+      $("#bio-modal-dialog").modal();
+    }
+  </script>
+}
