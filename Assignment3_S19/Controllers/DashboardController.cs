@@ -41,7 +41,7 @@ namespace Assignment3_S19.Controllers
             var symbols = user.UserStocks.Select(stock => stock.Symbol).ToArray();
 
             // Data to be requested
-            var requested = new string[] { "chart", "company", "logo", "quote" };
+            var requested = new string[] { "chart", "company", "quote" };
 
             // Make request to IEX Trading API
             var stockData = await _iexService.GetStockData(symbols, requested, range: "1m");
