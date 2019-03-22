@@ -78,7 +78,7 @@
 
 @section Scripts {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-  <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
   <script>
     var chartData = @Html.Raw(JsonConvert.SerializeObject(Model.StockData));
 
@@ -98,17 +98,16 @@
           }
         ]
       }, {
-          showPoint: false,
-          showArea: true,
-          axisX: {
-            type: Chartist.FixedScaleAxis,
-            divisor: 5,
-            labelInterpolationFnc: function (value) {
-              return moment(value).format('MMM D');
-            }
+        showPoint: false,
+        showArea: true,
+        axisX: {
+          type: Chartist.FixedScaleAxis,
+          divisor: 5,
+          labelInterpolationFnc: function (value) {
+            return moment(value).format("M/D");
           }
-        })
-
+        }
+      });
     }
 
   </script>
