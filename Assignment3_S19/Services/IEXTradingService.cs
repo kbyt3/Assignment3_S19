@@ -36,9 +36,9 @@ namespace Assignment3_S19.Services
             }
         }
 
-        public async Task<ApiResponse> GetStockData(string[] symbols, string[] requested, string range = "1m", int last = 5)
+        public async Task<ApiResponse> GetStockData(string[] symbols, string[] data, string range = "1m", int last = 5)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, MakeRequestUrl(symbols, requested, range, last));
+            var request = new HttpRequestMessage(HttpMethod.Get, MakeRequestUrl(symbols, data, range, last));
 
             var client = _clientFactory.CreateClient("IEXTrading");
 
@@ -55,9 +55,9 @@ namespace Assignment3_S19.Services
             }
         }
 
-        private string MakeRequestUrl(string[] symbols, string[] requested, string range, int last)
+        private string MakeRequestUrl(string[] symbols, string[] data, string range, int last)
         {
-            return String.Format(@"stock/market/batch?symbols={0}&types={1}&range={2}&last={3}", String.Join(',', symbols), String.Join(',', requested), range, last);
+            return String.Format(@"stock/market/batch?symbols={0}&types={1}&range={2}&last={3}", String.Join(',', symbols), String.Join(',', data), range, last);
         }
     }
 }
