@@ -10,7 +10,7 @@ namespace Assignment3_S19.Models
     {
         public IEXCompany Company { get; set; }
         public IEXQuote Quote { get; set; }
-        public Uri Logo { get; set; }
+        public string Logo { get; set; }
         public IEnumerable<IEXChartData> Chart { get; set; }
         public IEnumerable<IEXNews> News { get; set; }
     }
@@ -21,7 +21,7 @@ namespace Assignment3_S19.Models
         public string CompanyName { get; set; }
         public string Exchange { get; set; }
         public string Industry { get; set; }
-        public Uri Website { get; set; }
+        public string Website { get; set; }
         public string Description { get; set; }
         public string Ceo { get; set; }
         public string IssueType { get; set; }
@@ -50,7 +50,7 @@ namespace Assignment3_S19.Models
         public DateTimeOffset Datetime { get; set; }
         public string Headline { get; set; }
         public string Source { get; set; }
-        public Uri Url { get; set; }
+        public string Url { get; set; }
         public string Summary { get; set; }
         public string Related { get; set; }
         public Uri Image { get; set; }
