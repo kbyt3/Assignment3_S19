@@ -68,8 +68,6 @@ namespace Assignment3_S19
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
-
             app.UseAuthentication();
 
             app.UseMvc(routes =>
