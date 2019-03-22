@@ -5,6 +5,10 @@
     {
       "library": "typeahead.js@0.11.1",
       "destination": "wwwroot/lib/typeahead.js/"
+    },
+    {
+      "library": "apexcharts@3.6.3",
+      "destination": "wwwroot/lib/apexcharts/"
     }
   ]
 }

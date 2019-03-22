@@ -4,7 +4,7 @@
 
 <nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
   <div class="container">
-    <a class="navbar-brand logo" href="#">Stock Portfolio Tracker</a>
+    <a class="navbar-brand logo" href="#">Stock Tracker</a>
     <button class="navbar-toggler" data-toggle="collapse" data-target="#main-nav"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse d-sm-inline-flex flex-sm-row-reverse" id="main-nav">
       <ul class="navbar-nav">
@@ -31,11 +31,11 @@
       </ul>
       <ul class="nav navbar-nav flex-grow-1">
         <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
-        <li class="nav-item"><a class="nav-link" asp-controller="Guides" asp-action="Index">Resources</a></li>
         @if (SignInManager.IsSignedIn(User))
         {
-          <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Index">Admin</a></li>
+          <li class="nav-item"><a class="nav-link" asp-controller="Portfolio" asp-action="Index">Favorites</a></li>
         }
+        <li class="nav-item"><a class="nav-link" asp-controller="Guides" asp-action="Index">Resources</a></li>
         <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="AboutUs">About Us</a></li>
       </ul>
     </div>
