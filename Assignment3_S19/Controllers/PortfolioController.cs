@@ -83,7 +83,7 @@ namespace Assignment3_S19.Controllers
         public ActionResult SearchCompany(string searchText)
         {
             var results = from company in _dbContext.Companies
-                          where company.Name.Contains(searchText) && company.IsEnabled
+                          where (company.Name.StartsWith(searchText) || company.Symbol.StartsWith(searchText)) && company.IsEnabled
                           select new { label = company.Name, value = company.Symbol };
 
             return Json(results);
