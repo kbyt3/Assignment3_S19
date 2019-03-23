@@ -23,16 +23,30 @@
 </div>
 
 <div class="block-content">
+
+  @if (ViewData["message"] != null)
+  {
+    <div id="message" class="alert alert-success" role="alert">
+      @ViewData["message"].ToString()
+    </div>
+  }
+
   <ul class="list-group">
     @foreach (var stock in Model.UserStocks)
     {
-      <li class="list-group-item">
-        @stock.Symbol
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span class="d-block flex-grow-0 col-2">@stock.Symbol</span>
+        <span class="d-block flex-grow-1 text-left">@stock.Company.Name</span>
+
+        <button class="btn btn-link btn-sm text-muted delete-button" data-symbol="@stock.Symbol"><i class="fas fa-times-circle"></i> Remove</button>
       </li>
     }
   </ul>
 </div>
 
+<form id="remove-symbol-form" method="post" asp-controller="Portfolio" asp-action="RemoveStock">
+  <input type="hidden" id="symbol-to-remove" name="symbol" />
+</form>
 
 @section Head {
   <link href="~/css/typeahead.css" rel="stylesheet" />
@@ -70,5 +84,19 @@
         symbolToBeAdded.val(suggestion.value);
       }
     });
+
+    var deleteButton = $(".delete-button");
+    var symbolToRemove = $("#symbol-to-remove");
+    var removeSymbolForm = $("#remove-symbol-form");
+
+    deleteButton.on("click", function () {
+      var symbol = $(this).data("symbol");
+      symbolToRemove.val(symbol);
+      removeSymbolForm.submit();
+    });
+
+    setTimeout(function () {
+      $("#message").fadeOut(500)
+    }, 3000);
   </script>
 }

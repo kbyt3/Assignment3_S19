@@ -37,21 +37,27 @@ namespace Assignment3_S19.Controllers
                 .Include(u => u.UserStocks)
                 .FirstAsync(u => u.Id == userId);
 
+            if (user.UserStocks.Count() == 0)
+                return RedirectToAction("Empty");
+
             // Symbols to be requested
             var symbols = user.UserStocks.Select(stock => stock.Symbol).ToArray();
 
             // Data to be requested
-            var requested = new string[] { "chart", "company", "quote" };
+            var data = new string[] { "chart", "company", "quote" };
 
             // Make request to IEX Trading API
-            var stockData = await _iexService.GetStockData(symbols, requested, range: "1m");
+            var stockData = await _iexService.GetStockData(symbols, data, range: "1m");
 
             model.User = user;
             model.StockData = stockData;
 
             return View(model);
         }
+
+        public ActionResult Empty()
+        {
+            return View();
+        }
     }
-
-
 }

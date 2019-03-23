@@ -31,7 +31,17 @@ namespace Assignment3_S19.Controllers
             var user = await _userManager.Users
                 .Include(u => u.UserStocks)
                 .FirstAsync(u => u.Id == userId);
-            
+
+            var symbols = user.UserStocks.Select(s => s.Symbol).ToArray();
+
+            var companies = _dbContext.Companies
+                .Where(c => symbols.Contains(c.Symbol));
+
+            foreach (var stock in user.UserStocks)
+            {
+                stock.Company = companies.First(c => c.Symbol == stock.Symbol);
+            }
+
             return View(user);
         }
 
@@ -45,10 +55,26 @@ namespace Assignment3_S19.Controllers
                 UserId = userId,
                 Symbol = symbol
             };
-            
+
             _dbContext.UserStocks.Add(stock);
 
             await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> RemoveStock(string symbol)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var stock = _dbContext.UserStocks.Where(s => s.UserId == userId && s.Symbol == symbol).First();
+
+            _dbContext.UserStocks.Remove(stock);
+
+            await _dbContext.SaveChangesAsync();
+
+            ViewData["message"] = $"{symbol} was removed from your favorites.";
 
             return RedirectToAction("Index");
         }

@@ -18,6 +18,8 @@ namespace Assignment3_S19.Models
         [JsonIgnore]
         public virtual ApplicationUser User { get; set; }
         public string Symbol { get; set; }
+        [NotMapped]
+        public virtual Company Company { get; set; }
         public DateTime DateAdded { get; set; }
 
         public UserStock()
