@@ -1,0 +1,155 @@
+﻿@model IEXApiResponse
+@using Newtonsoft.Json
+@using Assignment3_S19.Helpers
+
+@{
+  ViewData["Title"] = Model.Company.CompanyName;
+
+  var periods = new string[]
+  {
+    "1d", "1m", "3m","6m","ytd","1y","2y", "5y"
+  };
+}
+
+<div class="block-heading">
+  <h2 class="text-info">@Model.Company.CompanyName</h2>
+</div>
+
+<div class="block-content">
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div id="chart"></div>
+      <p>
+        Historically adjusted market-wide data:
+        <ul class="pagination">
+          @foreach (var period in periods)
+          {
+          <li class="page-item @(ViewData["range"].ToString() == period ? "active": "")">
+            <a class="page-link" href="/quotes?symbol=@Model.Company.Symbol&range=@period">@period.ToUpper()</a>
+          </li>
+          }
+        </ul>
+      </p>
+
+      <h4 class="mt-5">Latest News</h4>
+
+      <div class="list-group mb-4">
+        @foreach (var article in Model.News)
+        {
+        <a href="@article.Url" class="list-group-item list-group-item-action flex-column align-items-start" target="_blank">
+          <h5 class="mb-1">@article.Headline</h5>
+
+          <p class="mb-1">@article.Summary</p>
+
+          <div class="d-flex w-100 justify-content-between">
+            <small>@article.Source</small>
+            <small>@article.Datetime.ToString("MM/dd/yyyy h:mm tt")</small>
+          </div>
+        </a>
+        }
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <img src="@Model.Logo.Url" alt="@Model.Company.Symbol" class="float-right" style="max-width: 128px;" />
+
+      <div class="stock-quote">
+        <small>@Model.Quote.PrimaryExchange</small>
+        <h4>@Model.Quote.LatestPrice.ToString("C2")</h4>
+        <p class="mb-0">
+          @if (Model.Quote.Change > 0)
+          {
+            <span class="text-success">
+              +@Model.Quote.Change.ToString("C2")
+              (@Model.Quote.ChangePercent.ToString("P1"))
+              <i class="fas fa-arrow-up"></i>
+            </span>
+          }
+          else
+          {
+            <span class="text-danger">
+              @Model.Quote.Change.ToString("C2")
+              (@Model.Quote.ChangePercent.ToString("P1"))
+              <i class="fas fa-arrow-down"></i>
+            </span>
+          }
+        </p>
+        <small>As of @DateHelper.UnixTimeStampToDateTime(Model.Quote.LatestUpdate).ToString("MMM d, hh:mm tt")</small>
+      </div>
+
+      <table class="table table-sm mt-5">
+        <tr>
+          <td class="w-50">Prev. Close</td>
+          <td class="text-right">@Model.Quote.PreviousClose.ToString("C2")</td>
+        </tr>
+        <tr>
+          <td>Open</td>
+          <td class="text-right">@Model.Quote.Open.ToString("C2")</td>
+        </tr>
+        <tr>
+          <td>Day&rsquo;s Range</td>
+          <td class="text-right">@Model.Quote.Low.ToString("C2") - @Model.Quote.High.ToString("C2")</td>
+        </tr>
+        <tr>
+          <td>52-week Range</td>
+          <td class="text-right">@Model.Quote.Week52Low.ToString("C2") - @Model.Quote.Week52High.ToString("C2")</td>
+        </tr>
+        <tr>
+          <td>Avg. Volume</td>
+          <td class="text-right">@Model.Quote.AvgTotalVolume.ToString("N0")</td>
+        </tr>
+        <tr>
+          <td>YTD Change</td>
+          <td class="text-right">@Model.Quote.YtdChange.ToString("P2")</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+@section Scripts {
+  <script src="~/lib/apexcharts/apexcharts.js"></script>
+
+  <script>
+    var chartData = @Html.Raw(JsonConvert.SerializeObject(Model.Chart));
+
+    var chartValues = chartData.map(function (item) {
+      return {
+        x: new Date(item.Date),
+        y: item.Close
+      };
+    });
+
+    var options = {
+      chart: {
+        height: 350,
+        type: "area",
+        zoom: {
+          enabled: true
+        }
+      },
+      title: {
+        text: "@Model.Company.Symbol - @ViewData["range"].ToString()",
+        align: "left"
+      },
+      dataLabels: {
+        enabled: false
+      },
+      series: [
+        {
+          name: "@Model.Company.Symbol",
+          data: chartValues
+        }
+      ],
+      xaxis: {
+        type: "datetime"
+      }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+    chart.render();
+
+  </script>
+}

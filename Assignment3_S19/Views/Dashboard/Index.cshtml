@@ -5,8 +5,6 @@
   ViewData["Title"] = "My Dashboard";
 }
 
-
-
 <section class="dashboard">
   <div class="block-heading">
     <h2 class="text-info">Dashboard</h2>
@@ -49,11 +47,10 @@
                 </div>
               </div>
               <div class="card-footer pb-1 pt-1">
-                <a href="#" class="more-details btn btn-link">Details</a>
+                <a href="/quotes?symbol=@stock.Key&range=1m" class="more-details btn btn-link">Details</a>
               </div>
             </div>
           </div>
-
         }
       </div>
     </div>
@@ -61,7 +58,7 @@
 </section>
 
 @section Head {
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
   <style>
     .stock-price {
       position: absolute;
@@ -70,8 +67,20 @@
     }
 
     .chart {
+      padding-top: .5rem;
       height: 125px;
       width: 100%;
+    }
+
+    .ct-series-a .ct-line {
+      /* Set the colour of this series line */
+      stroke: #3b99e0;
+      /* Control the thikness of your lines */
+      stroke-width: 2px;
+    }
+
+    .ct-series-a .ct-area {
+      fill: lightblue;
     }
   </style>
 }
@@ -109,6 +118,5 @@
         }
       });
     }
-
   </script>
 }
