@@ -42,6 +42,8 @@ namespace Assignment3_S19.Controllers
                 stock.Company = companies.First(c => c.Symbol == stock.Symbol);
             }
 
+            ViewData["message"] = TempData["message"];
+
             return View(user);
         }
 
@@ -74,7 +76,7 @@ namespace Assignment3_S19.Controllers
 
             await _dbContext.SaveChangesAsync();
 
-            ViewData["message"] = $"{symbol} was removed from your favorites.";
+            TempData["message"] = $"{symbol} was removed from your favorites.";
 
             return RedirectToAction("Index");
         }
