@@ -79,9 +79,9 @@ namespace Assignment3_S19.Models
         public string LatestTime { get; set; }
         public long LatestUpdate { get; set; }
         public long LatestVolume { get; set; }
-        public double IexRealtimePrice { get; set; }
-        public long IexRealtimeSize { get; set; }
-        public long IexLastUpdated { get; set; }
+        public double? IexRealtimePrice { get; set; }
+        public long? IexRealtimeSize { get; set; }
+        public long? IexLastUpdated { get; set; }
         public double DelayedPrice { get; set; }
         public long DelayedPriceTime { get; set; }
         public double ExtendedPrice { get; set; }
@@ -91,13 +91,13 @@ namespace Assignment3_S19.Models
         public double PreviousClose { get; set; }
         public double Change { get; set; }
         public double ChangePercent { get; set; }
-        public double IexMarketPercent { get; set; }
-        public long IexVolume { get; set; }
+        public double? IexMarketPercent { get; set; }
+        public long? IexVolume { get; set; }
         public long AvgTotalVolume { get; set; }
-        public long IexBidPrice { get; set; }
-        public long IexBidSize { get; set; }
-        public long IexAskPrice { get; set; }
-        public long IexAskSize { get; set; }
+        public long? IexBidPrice { get; set; }
+        public long? IexBidSize { get; set; }
+        public long? IexAskPrice { get; set; }
+        public long? IexAskSize { get; set; }
         public long MarketCap { get; set; }
         public double PeRatio { get; set; }
         public double Week52High { get; set; }
