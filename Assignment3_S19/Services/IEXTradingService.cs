@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using ApiResponse = System.Collections.Generic.Dictionary<string, Assignment3_S19.Models.IEXApiResponse>;
 
 namespace Assignment3_S19.Services
@@ -46,8 +47,9 @@ namespace Assignment3_S19.Services
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content
-                    .ReadAsAsync<ApiResponse>();
+                var jsonData = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<ApiResponse>(jsonData, new DefaultJsonSerializer());
             }
             else
             {

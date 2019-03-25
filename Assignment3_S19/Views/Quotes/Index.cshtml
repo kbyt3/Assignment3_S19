@@ -3,12 +3,19 @@
 @using Assignment3_S19.Helpers
 
 @{
-  ViewData["Title"] = Model.Company.CompanyName;
+    ViewData["Title"] = Model.Company.CompanyName;
 
-  var periods = new string[]
-  {
+    var periods = new string[]
+    {
     "1m", "3m","6m","ytd","1y","2y", "5y"
-  };
+    };
+
+    var chartJson = JsonConvert.SerializeObject(
+        Model.Chart, 
+        Formatting.None, new JsonSerializerSettings()
+        {
+          NullValueHandling = NullValueHandling.Ignore
+        });
 }
 
 <div class="block-heading">
@@ -25,9 +32,9 @@
         <ul class="pagination">
           @foreach (var period in periods)
           {
-          <li class="page-item @(ViewData["range"].ToString() == period ? "active": "")">
-            <a class="page-link" href="/quotes?symbol=@Model.Company.Symbol&range=@period">@period.ToUpper()</a>
-          </li>
+            <li class="page-item @(ViewData["range"].ToString() == period ? "active": "")">
+              <a class="page-link" href="/quotes?symbol=@Model.Company.Symbol&range=@period">@period.ToUpper()</a>
+            </li>
           }
         </ul>
       </p>
@@ -37,16 +44,16 @@
       <div class="list-group mb-4">
         @foreach (var article in Model.News)
         {
-        <a href="@article.Url" class="list-group-item list-group-item-action flex-column align-items-start" target="_blank">
-          <h5 class="mb-1">@article.Headline</h5>
+          <a href="@article.Url" class="list-group-item list-group-item-action flex-column align-items-start" target="_blank">
+            <h5 class="mb-1">@article.Headline</h5>
 
-          <p class="mb-1">@article.Summary</p>
+            <p class="mb-1">@article.Summary</p>
 
-          <div class="d-flex w-100 justify-content-between">
-            <small>@article.Source</small>
-            <small>@article.Datetime.ToString("MM/dd/yyyy h:mm tt")</small>
-          </div>
-        </a>
+            <div class="d-flex w-100 justify-content-between">
+              <small>@article.Source</small>
+              <small>@article.Datetime.ToString("MM/dd/yyyy h:mm tt")</small>
+            </div>
+          </a>
         }
       </div>
     </div>
@@ -112,7 +119,7 @@
   <script src="~/lib/apexcharts/apexcharts.js"></script>
 
   <script>
-    var chartData = @Html.Raw(JsonConvert.SerializeObject(Model.Chart));
+    var chartData = @Html.Raw(chartJson);
 
     var chartValues = chartData.map(function (item) {
       return {

@@ -2,7 +2,14 @@
 @using Newtonsoft.Json
 
 @{
-  ViewData["Title"] = "My Dashboard";
+    ViewData["Title"] = "My Dashboard";
+
+    var chartJson = JsonConvert.SerializeObject(
+        Model.StockData,
+        Formatting.None, new JsonSerializerSettings()
+        {
+          NullValueHandling = NullValueHandling.Ignore
+        });
 }
 
 <section class="dashboard">
@@ -89,7 +96,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
   <script>
-    var chartData = @Html.Raw(JsonConvert.SerializeObject(Model.StockData));
+    var chartData = @Html.Raw(chartJson);
 
     for (var symbol in chartData) {
       var element = "div.card[data-symbol='" + symbol + "'] .chart";
