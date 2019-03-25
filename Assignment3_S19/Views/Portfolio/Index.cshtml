@@ -9,25 +9,51 @@
 </div>
 
 <div class="block-content">
-  <form method="post" asp-controller="Portfolio" asp-action="AddStock">
-    <input type="hidden" name="symbol" id="symbol-hidden" />
 
-    <div class="form-group text-center">
-      <label class="col-form-label-lg mr-3" for="search-text">Search for companies:</label>
+  <ul class="nav nav-pills d-flex justify-content-center mb-4" id="pills-tab">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="pill" href="#search-by-company">By Company</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#search-by-symbol">By Symbol</a>
+    </li>
+  </ul>
 
-      <input type="text" id="search-text" placeholder="Company Name..." />
+  <div class="tab-content" id="search-tabs-content">
+    <div class="tab-pane fade show active" id="search-by-company">
+      <form method="post" asp-controller="Portfolio" asp-action="AddStock">
+        <input type="hidden" name="symbol" id="symbol-hidden" />
 
-      <button type="submit" id="add-company-button" disabled class="btn btn-primary btn-lg ml-1">Add</button>
+        <div class="form-group text-center">
+          <label class="col-form-label-lg mr-3" for="search-text">Search for companies:</label>
+
+          <input type="text" id="search-text" placeholder="Company Name..." />
+
+          <button type="submit" id="add-company-button" disabled class="btn btn-primary btn-lg ml-1">Add</button>
+        </div>
+      </form>
     </div>
-  </form>
+    <div class="tab-pane fade" id="search-by-symbol">
+      <form method="post" asp-controller="Portfolio" asp-action="AddStock">
+        <div class="form-group text-center">
+          <label class="col-form-label-lg mr-3" for="search-text">Enter symbol:</label>
+
+          <input type="text" name="symbol" id="symbol-value" class="tt-query" style="vertical-align: middle;" placeholder="e.g. GOOGL" />
+
+          <button type="submit" id="add-company-by-symbol-button" disabled class="btn btn-primary btn-lg ml-1">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </div>
 
 <div class="block-content">
 
-  @if (ViewData["message"] != null)
+  @if (TempData["message"] != null)
   {
-    <div id="message" class="alert alert-success" role="alert">
-      @ViewData["message"].ToString()
+    <div id="message" class="alert alert-@(TempData["messageType"] != null ? TempData["messageType"].ToString() : "info")" role="alert">
+      @TempData["message"].ToString()
     </div>
   }
 
@@ -68,21 +94,27 @@
     var searchTextBox = $("#search-text");
     var submitButton = $("#add-company-button");
     var symbolToBeAdded = $("#symbol-hidden");
+    var addBySymbolValue = $("#symbol-value");
+    var addBySymbolButton = $("#add-company-by-symbol-button");
 
     searchTextBox.typeahead({
       classNames: {
         input: "tt-query"
       }
     }, {
-      display: "label",
-      source: companies
+        display: "label",
+        source: companies
       });
 
-    searchTextBox.bind("typeahead:select", function(ev, suggestion) {
+    searchTextBox.bind("typeahead:select", function (ev, suggestion) {
       if (typeof suggestion === "object") {
         submitButton.prop("disabled", false);
         symbolToBeAdded.val(suggestion.value);
       }
+    });
+
+    addBySymbolValue.bind("keyup", function (ev) {
+      addBySymbolButton.prop("disabled", ev.target.value === "");
     });
 
     var deleteButton = $(".delete-button");

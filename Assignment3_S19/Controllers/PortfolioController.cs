@@ -42,8 +42,6 @@ namespace Assignment3_S19.Controllers
                 stock.Company = companies.First(c => c.Symbol == stock.Symbol);
             }
 
-            ViewData["message"] = TempData["message"];
-
             return View(user);
         }
 
@@ -51,6 +49,16 @@ namespace Assignment3_S19.Controllers
         public async Task<ActionResult> AddStock(string symbol)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var company = await _dbContext.Companies.FirstOrDefaultAsync(c => c.Symbol == symbol);
+
+            if (company == null)
+            {
+                TempData["message"] = $"{symbol} was not found in our database.";
+                TempData["messageType"] = "danger";
+
+                return RedirectToAction("Index");
+            }
 
             var stock = new UserStock
             {
@@ -61,6 +69,9 @@ namespace Assignment3_S19.Controllers
             _dbContext.UserStocks.Add(stock);
 
             await _dbContext.SaveChangesAsync();
+
+            TempData["message"] = $"{symbol} was added to your favorites.";
+            TempData["messageType"] = "success";
 
             return RedirectToAction("Index");
         }
@@ -77,6 +88,7 @@ namespace Assignment3_S19.Controllers
             await _dbContext.SaveChangesAsync();
 
             TempData["message"] = $"{symbol} was removed from your favorites.";
+            TempData["messageType"] = "info";
 
             return RedirectToAction("Index");
         }
